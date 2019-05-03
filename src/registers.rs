@@ -2,6 +2,7 @@ use bitflags::bitflags;
 
 bitflags! {
     /// Configuration flags of the Cr0 register.
+    #[derive(Default)]
     pub struct Cr0: u64 {
         /// Enables protected mode.
         const PROTECTED_MODE_ENABLE = 1 << 0;
@@ -35,6 +36,7 @@ bitflags! {
 
 bitflags! {
     /// Controls cache settings for the level 4 page table.
+    #[derive(Default)]
     pub struct Cr3: u64 {
         /// Use a writethrough cache policy for the P4 table (else a writeback policy is used).
         const PAGE_LEVEL_WRITETHROUGH = 1 << 3;
@@ -45,6 +47,7 @@ bitflags! {
 
 bitflags! {
     /// Flags of the Extended Feature Enable Register.
+    #[derive(Default)]
     pub struct Efer: u64 {
         /// Enables the `syscall` and `sysret` instructions.
         const SYSTEM_CALL_EXTENSIONS = 1 << 0;
@@ -119,5 +122,13 @@ bitflags! {
         /// Set by hardware if last arithmetic operation generated a carry out of the
         /// most-significant bit of the result.
         const CARRY_FLAG = 1 << 0;
+    }
+}
+
+impl Default for RFlags {
+    fn default() -> Self {
+        Self {
+            bits: 1 << 1 // Bit 1 is always on in EFlags and RFlags
+        }
     }
 }
