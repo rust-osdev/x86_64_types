@@ -32,3 +32,13 @@ bitflags! {
         const PAGING = 1 << 31;
     }
 }
+
+bitflags! {
+    /// Controls cache settings for the level 4 page table.
+    pub struct Cr3Flags: u64 {
+        /// Use a writethrough cache policy for the P4 table (else a writeback policy is used).
+        const PAGE_LEVEL_WRITETHROUGH = 1 << 3;
+        /// Disable caching for the P4 table.
+        const PAGE_LEVEL_CACHE_DISABLE = 1 << 4;
+    }
+}
