@@ -49,12 +49,58 @@ bitflags! {
 bitflags! {
     /// Controls cache settings for the level 4 page table.
     #[derive(Default)]
-    pub struct Cr3: u64 {
+    pub struct Cr3Flags: u64 {
         /// Use a writethrough cache policy for the P4 table (else a writeback policy is used).
         const PAGE_LEVEL_WRITETHROUGH = 1 << 3;
 
         /// Disable caching for the P4 table.
         const PAGE_LEVEL_CACHE_DISABLE = 1 << 4;
+    }
+}
+
+#[repr(transparent)]
+#[derive(Copy, Clone, Debug, Default)]
+pub struct Cr3(u64);
+
+impl Cr3 {
+    const MASK: u64 = 0b1111_1111_1111;
+
+    pub fn flags(self, cr4: Cr4) -> Cr3Flags {
+        assert!(!cr4.contains(Cr4::PCID));
+
+        Cr3Flags::from_bits_truncate(self.0)
+    }
+
+    pub fn set_flags(&mut self, cr4: Cr4, flags: Cr3Flags) {
+        assert!(!cr4.contains(Cr4::PCID));
+
+        self.0 &= !Self::MASK;
+        self.0 |= flags.bits() & Self::MASK;
+    }
+
+    pub fn pcid(self, cr4: Cr4) -> u16 {
+        assert!(cr4.contains(Cr4::PCID));
+
+        (self.0 & Self::MASK) as u16
+    }
+
+    pub fn set_pcid(&mut self, cr4: Cr4, pcid: u16) {
+        assert!(cr4.contains(Cr4::PCID));
+        assert!(pcid as u64 <= Self::MASK);
+
+        self.0 &= !Self::MASK;
+        self.0 |= pcid as u64;
+    }
+
+    pub fn pml4(self) -> u64 {
+        self.0 << 12
+    }
+
+    pub fn set_pml4(&mut self, pml4: u64) {
+        assert!(pml4 <= u64::max_value() >> 12);
+
+        self.0 &= Self::MASK;
+        self.0 |= pml4 << 12;
     }
 }
 
