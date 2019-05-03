@@ -17,6 +17,8 @@ bitflags! {
         ///
         /// This flags allows lazily saving x87/MMX/SSE instructions on hardware context switches.
         const TASK_SWITCHED = 1 << 3;
+        /// Math coprocessor is 80287 (disabled) or 80387 (enabled).
+        const EXTENSION_TYPE = 1 << 4;
         /// Enables the native error reporting mechanism for x87 FPU errors.
         const NUMERIC_ERROR = 1 << 5;
         /// Controls whether supervisor-level writes to read-only pages are inhibited.
