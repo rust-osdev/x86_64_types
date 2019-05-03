@@ -2,7 +2,7 @@ use bitflags::bitflags;
 
 bitflags! {
     /// Configuration flags of the Cr0 register.
-    pub struct Cr0Flags: u64 {
+    pub struct Cr0: u64 {
         /// Enables protected mode.
         const PROTECTED_MODE_ENABLE = 1 << 0;
         /// Enables monitoring of the coprocessor, typical for x87 instructions.
@@ -35,7 +35,7 @@ bitflags! {
 
 bitflags! {
     /// Controls cache settings for the level 4 page table.
-    pub struct Cr3Flags: u64 {
+    pub struct Cr3: u64 {
         /// Use a writethrough cache policy for the P4 table (else a writeback policy is used).
         const PAGE_LEVEL_WRITETHROUGH = 1 << 3;
         /// Disable caching for the P4 table.
@@ -45,7 +45,7 @@ bitflags! {
 
 bitflags! {
     /// Flags of the Extended Feature Enable Register.
-    pub struct EferFlags: u64 {
+    pub struct Efer: u64 {
         /// Enables the `syscall` and `sysret` instructions.
         const SYSTEM_CALL_EXTENSIONS = 1 << 0;
         /// Activates long mode, requires activating paging.
