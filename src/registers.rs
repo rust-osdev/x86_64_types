@@ -93,14 +93,6 @@ bitflags! {
         const RESUME_FLAG = 1 << 16;
         /// Used by `iret` in hardware task switch mode to determine if current task is nested.
         const NESTED_TASK = 1 << 14;
-        /// The high bit of the I/O Privilege Level field.
-        ///
-        /// Specifies the privilege level required for executing I/O address-space instructions.
-        const IOPL_HIGH = 1 << 13;
-        /// The low bit of the I/O Privilege Level field.
-        ///
-        /// Specifies the privilege level required for executing I/O address-space instructions.
-        const IOPL_LOW = 1 << 12;
         /// Set by hardware to indicate that the sign bit of the result of the last signed integer
         /// operation differs from the source operands.
         const OVERFLOW_FLAG = 1 << 11;
@@ -122,6 +114,24 @@ bitflags! {
         /// Set by hardware if last arithmetic operation generated a carry out of the
         /// most-significant bit of the result.
         const CARRY_FLAG = 1 << 0;
+    }
+}
+
+impl RFlags {
+    /// Get the I/O Privilege Level (0-3, inclusive)
+    pub fn iopl(self) -> u8 {
+        (self.bits >> 12) as u8 & 0b11
+    }
+
+    /// Set the I/O Privilege Level (0-3, inclusive)
+    ///
+    /// # Panics
+    ///
+    /// Panics on an invalid privilege level (>= 4).
+    pub fn set_iopl(&mut self, level: u8) {
+        assert!(level <= 0b11);
+        self.bits &= !(0b11 << 12);
+        self.bits |= (level as u64) << 12;
     }
 }
 
