@@ -48,6 +48,75 @@ bitflags! {
 }
 
 bitflags! {
+    /// Controls extensions such as virtualization, I/O breakpoints and page size.
+    #[derive(Default)]
+    pub struct Cr4: u64 {
+        /// Enables support for the virtual interrupt flag (VIF) in virtual-8086 mode.
+        const VIRTUAL_MODE_EXTENSIONS = 1 << 0;
+
+        /// Enables support for the virtual interrupt flag (VIF) in protected mode.
+        const PROTECTED_VIRTUAL_INTERRUPTS = 1 << 1;
+
+        /// RDTSC instruction can only be executed when in ring 0, otherwise any level.
+        const NO_TIMESTAMP = 1 << 2;
+
+        /// Enables debug register based breaks on I/O space access.
+        const DEBUGGING_EXTENSIONS = 1 << 3;
+
+        /// Enables 4MiB page size. Ignored under PAE (x86) and long mode (x86_64).
+        const PAGE_SIZE_EXTENSION = 1 << 4;
+
+        /// Change page table layout to enables 36-bit physical addresses.
+        const PHYSICAL_ADDRESS_EXTENSION = 1 << 5;
+
+        /// Enables machine check interrupts to occur.
+        const MACHINE_CHECK_EXTENSION = 1 << 6;
+
+        /// Address translations (PDE or PTE records) may be shared between address spaces.
+        const PAGE_GLOBAL = 1 << 7;
+
+        /// RDPMC can be executed at any privilege level, otherwise only ring 0.
+        const PERFORMANCE_COUNTER = 1 << 8;
+
+        /// Enables Streaming SIMD Extensions (SSE) instructions and fast FPU save & restore.
+        const FXSR = 1 << 9;
+
+        /// Enables unmasked SSE exceptions.
+        const XMM_EXCEPTIONS = 1 << 10;
+
+        /// The SGDT, SIDT, SLDT, SMSW and STR instructions cannot be executed if CPL > 0.
+        const USE_MODE_INSTRUCTION_PREVENTION = 1 << 11;
+
+        /// Enables five-level paging.
+        const FIVE_LEVEL_PAGING = 1 << 12;
+
+        /// Enables Intel VT-x x86 virtualization.
+        const VIRTUAL_MACHINE_EXTENSIONS = 1 << 13;
+
+        /// Enables Intel Trusted Execution Technology (TXT).
+        const SAFER_MODE_EXTENSIONS = 1 << 14;
+
+        /// Enables the instructions RDFSBASE, RDGSBASE, WRFSBASE, and WRGSBASE.
+        const FSGSBASE = 1 << 16;
+
+        /// Enables process-context identifiers (PCIDs).
+        const PCID = 1 << 17;
+
+        /// Enables XSAVE and Processor Extended State.
+        const XSAVE = 1 << 18;
+
+        /// Execution of code in a higher ring generates a fault.
+        const SMEP = 1 << 20;
+
+        /// Access of data in a higher ring generates a fault.
+        const SMAP = 1 << 21;
+
+        /// Enables Protection Key.
+        const PROTECTION_KEY = 1 << 22;
+    }
+}
+
+bitflags! {
     /// Flags of the Extended Feature Enable Register.
     #[derive(Default)]
     pub struct Efer: u64 {
