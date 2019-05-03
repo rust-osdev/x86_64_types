@@ -7,3 +7,4 @@ license = "MIT/Apache-2.0"
 description = "[placeholder]"
 
 [dependencies]
+bitflags = "1.0.5"
