@@ -3,5 +3,7 @@ name = "x86_64_types"
 version = "0.1.0"
 authors = ["Philipp Oppermann <dev@phil-opp.com>"]
 edition = "2018"
+license = "MIT/Apache-2.0"
+description = "[placeholder]"
 
 [dependencies]
